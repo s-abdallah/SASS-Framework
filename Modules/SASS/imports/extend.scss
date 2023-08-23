@@ -1,0 +1,19 @@
+%hide-text {
+  @include query(( ti:-9999px,o:3,ws:nowrap ));
+}
+%element-clear {
+  @include setClr(0, both); @include setBoxsizing(border-box);
+}
+%align-elements {
+  @extend %element-clear;
+  @include query(( pos:(2,50% -1 -1 50%) ));
+  @include setTransform(( translate(-50%, -50%) ));
+}
+%hide-elements {
+  @include query(( vis:hidden )); @include setOpacity(0);
+  @include setTransition(( visibility 0s, opacity 0.5s linear ));
+}
+%show-elements {
+  @include setOpacity(1); @include query(( vis:visible ));
+  @include setTransitionDelay(( 0s ));
+}

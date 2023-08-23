@@ -1,0 +1,21 @@
+// This is a mixin for generating a transition on an element.
+// The "transition" CSS property serves as a shorthand for "transition-property," "transition-duration," "transition-timing-function," and "transition-delay."
+// CSS transitions allow you to smoothly change property values over a specified duration.
+@mixin setTransition($map){
+  -webkit-transition: $map;
+     -moz-transition: $map;
+      -ms-transition: $map;
+       -o-transition: $map;
+          transition: $map;
+}
+
+
+// This is a mixin for generating a transition delay on an element.
+// The "transition-delay" CSS property specifies the duration to wait before starting a transition effect for a property when its value changes.
+// Wait for 2 seconds before the transition effect begins: e.g. setTransitionDelay(2s);
+@mixin setTransitionDelay($map){
+-webkit-transition-delay: $map;
+   -moz-transition-delay: $map;
+     -o-transition-delay: $map;
+        transition-delay: $map;
+}

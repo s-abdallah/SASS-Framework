@@ -1,0 +1,9 @@
+// This is a mixin for generating a transform on an element.
+// The "transform" CSS property allows you to rotate, scale, skew, or translate an element. It alters the coordinate space of the CSS visual formatting model.
+@mixin setTransform($map){
+  -webkit-transform: $map;
+     -moz-transform: $map;
+      -ms-transform: $map;
+       -o-transform: $map;
+          transform: $map;
+}

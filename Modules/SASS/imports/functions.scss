@@ -350,3 +350,51 @@ $breakpoints: (xlg:1280px, lg:960px, md:720px, sm:640px, xs:460px, xxs:380px);
   }
   @content;
 }
+
+// "clear" for both directions.
+// The "clear" CSS property determines whether an element should be positioned below (cleared) floating elements that come before it. This property applies to both floating and non-floating elements.
+@mixin setClr($height:null,$pos:'after') {
+  @if $pos == 'both' {
+    &:before, &:after {
+      clear: both; content: ""; display: block;
+      @if $height != null { height: $height; }
+    }
+  }
+  @else {
+    &:#{$pos} {
+      clear: both; content: ""; display: block;
+      @if $height != null { height: $height; }
+    }
+  }
+}
+
+// This is a mixin for generating opacity on an element.
+// The "opacity" property specifies the opacity or transparency of an element.
+// The "opacity" property can accept a value between 0.0 and 1.0. A lower value indicates greater transparency: e.g. setOpacity(0.5);
+@mixin setOpacity($map){
+  -webkit-opacity: $map;
+     -moz-opacity: $map;
+      -ms-opacity: $map;
+       -o-opacity: $map;
+          opacity: $map;
+  filter: alpha(opacity=($map*100));
+}
+
+// This is a mixin for generating a "box-sizing" property on an element.
+// The "box-sizing" CSS property determines how the total width and height of an element are calculated.
+/* *************** ## Values ## *************** */
+// - content-box : This is the initial and default value as specified by the CSS standard. The width and height properties include the content, but does not include the padding, border, or margin.
+// - border-box : The width and height properties include the content, padding, and border, but do not include the margin. Note that padding and border will be inside of the box.
+/* *************** ## Global values ## *************** */
+// inherit, initial, revert, revert-layer, unset
+@mixin setBoxsizing($map){
+  -webkit-box-sizing: $map;
+     -moz-box-sizing: $map;
+      -ms-box-sizing: $map;
+       -o-box-sizing: $map;
+          box-sizing: $map;
+}
+
+/* *************** ## references ## *************** */
+@import "./references/transform";
+@import "./references/transition";
