@@ -1,0 +1,352 @@
+// This is a collection of useful functions for various repetitive tasks.
+$breakpoints: (xlg:1280px, lg:960px, md:720px, sm:640px, xs:460px, xxs:380px);
+
+// Set the color of an element with optional opacity; defaults to 1.0 if not supplied.
+@function color($color, $opacity:1.0) {
+  // The color variant is optional
+  @if (type-of($color)==string) {
+    $map: map-get($defaultColors, $color);
+    @return rgba(nth($map,1),nth($map,2),nth($map,3), $opacity);
+  } @else {
+    @return rgba(nth($color,1),nth($color,2),nth($color,3),$opacity);
+  }
+}
+
+// This is a mixin to simultaneously set various style options for all font properties.
+// $lists: ('size':15px,'color':color($color-12),'lineheight':10px,'weight':100,'family':'Arial','space':1px,'transform':lowercase,'style':normal,'decoration':none);
+@mixin setFont($lists:()){
+  @if checkvalue($lists, fsize) == false { font-size: map-get($defaultFonts, 'fsize'); }
+  @if checkvalue($lists, c) == false { color: color(map-get($defaultFonts, 'c')); }
+  @if checkvalue($lists, fstyle) == false { font-style: map-get($defaultFonts, 'fstyle'); }
+  @if checkvalue($lists, fstretch) == false { font-stretch: map-get($defaultFonts, 'fstretch'); }
+  @if checkvalue($lists, fw) == false { font-weight: map-get($defaultFonts, 'fw'); }
+  @if checkvalue($lists, fv) == false { font-variant: map-get($defaultFonts, 'fv'); }
+  @if checkvalue($lists, ff) == false { font-family: map-get($defaultFonts, 'ff'); }
+  @if checkvalue($lists, lh) == false { line-height: map-get($defaultFonts, 'lh'); }
+  @if checkvalue($lists, ls) == false { letter-spacing: map-get($defaultFonts, 'ls'); }
+  @if checkvalue($lists, tt) == false { text-transform: map-get($defaultFonts, 'tt'); }
+  @if checkvalue($lists, tdec) == false { text-decoration: map-get($defaultFonts, 'tdec'); }
+  @each $label, $map in $lists {
+    @if $label == 'fsize' { font-size: $map; }
+    @if $label == 'fstyle' { font-style: $map; }
+    @if $label == 'fstretch' { font-stretch: $map; }
+    @if $label == 'c' { color: $map; }
+    @if $label == 'align' { text-align: $map; }
+    @if $label == 'fw' { font-weight: $map; }
+    @if $label == 'fv' { font-variant: $map; }
+    @if $label == 'ff' { font-family: $map; }
+    @if $label == 'ls' { letter-spacing: $map; }
+    @if $label == 'valign' { vertical-align: $map; }
+    @if $label == 'lh' { line-height: $map; }
+    @if $label == 'tt' { text-transform: $map; }
+    @if $label == 'ti' { text-indent: $map; }
+    @if $label == 'ws' { white-space: $map; }
+    @if $label == 'tdec' { text-decoration: $map; }
+  }
+}
+
+// This is the main query to retrieve the CSS properties. Please follow the instructions for using the query shortcuts.
+// w  -> width EX: @include query(('w':100px)); @include query(('w':100px max));
+// wmax -> max-width @include query(('wmax':100px));
+// wmin -> max-width @include query(('wmin':100px));
+// h  -> height EX: @include query(('h':100px)); @include query(('h':100px max));
+// hmax -> max-height @include query(('hmax':100px));
+// hmin -> max-height @include query(('hmin':100px));
+// dim -> set the block dimentions width/height @include query(('dim':100px 50px));
+// bg -> background EX: @include query(('bg':red));
+// bg-c -> background-color EX: @include query(('bg-c':red));
+// padd -> padding EX: @include query(('padd':20px));
+// tpadd -> padding-top EX: @include query(('tpadd':20px));
+// rpadd -> padding-right EX: @include query(('rpadd':20px));
+// bpadd -> padding-bottom EX: @include query(('bpadd':20px));
+// lpadd -> padding-left EX: @include query(('lpadd':20px));
+// marg -> margin EX: @include query(('marg':20px));
+// tmarg -> margin-top EX: @include query(('tmarg':20px));
+// rmarg -> margin-right EX: @include query(('rmarg':20px));
+// bmarg -> margin-bottom EX: @include query(('bmarg':20px));
+// lmarg -> margin-left EX: @include query(('lmarg':20px));
+// c -> color EX: @include query(('c':red));
+// align -> text-align EX: @include query(('align':center));
+// valign -> text-align EX: @include query(('valign':sub));
+// fw -> font-weight EX: @include query(('fw':bold));
+// fv -> font-variant EX: @include query(('fv':normal));
+// fstyle -> font-style EX: @include query(('fstyle':italic));
+// fstretch -> font-stretch EX: @include query(('fstretch':normal));
+// fsize -> font-size EX: @include query(('fsize':40px));
+// ff -> font-family EX: @include query(('ff':'Roboto'));
+// lh -> font-family EX: @include query(('lh':2rem));
+// ls -> font-family EX: @include query(('ls':2rem));
+// tt -> text-transform EX: @include query(('tt':uppercase));
+// ti -> text-indent EX: @include query(('ti':100%));
+// ws -> white-space EX: @include query(('ws':nowrap));
+// to -> text-overflow EX: @include query(('to':ellipsis));
+// tdec -> text-decoration EX: @include query(('tdec':underline));
+// j-c -> justify-content EX: @include query(('j-c':space-between));
+// u-s -> user-select EX: @include query(('u-s':none));
+// a-i -> align-items EX: @include query(('a-i':center));
+// clr -> clear EX: @include query(('clr':both));
+// cu -> cursor EX: @include query(('cu':pointer));
+// pe -> pointer-events EX: @include query(('pe':none));
+// ct -> content EX: @include query(('content':'before'));
+// op -> opacity EX: @include query(('opacity':0));
+// f -> float EX: @include query(('fl':left));
+// z -> z-index EX: @include query(('z':left));
+// b -> border EX: @include query(('b':none));
+// b-c -> border-color EX: @include query(('b-c':red));
+// b-w -> border-width EX: @include query(('b-w':1px));
+// b-style -> border-style EX: @include query(('b-style':dotted));
+// b-T -> border-top EX: @include query(('b-T':5px solid red));
+// b-R -> border-right EX: @include query(('b-R':5px solid red));
+// b-B -> border-bottom EX: @include query(('b-B':5px solid red));
+// b-L -> border-left EX: @include query(('b-L':5px solid red));
+// b-coll -> border-collapse EX: @include query(('b-coll':collapse));
+// b-sp -> border-spacing EX: @include query(('b-sp':0));
+// b-s -> box-sizing EX: @include query(('b-s':border-box));
+// b-Tc -> border-top-color EX: @include query(('b-Tc':color('white')));
+// b-Rc -> border-right-color EX: @include query(('b-Rc':color('white')));
+// b-Bc -> border-bottom-color EX: @include query(('b-Bc':color('white')));
+// b-Lc -> border-left-color EX: @include query(('b-Lc':color('white')));
+// b-Tw -> border-top-color EX: @include query(('b-Tw':1px));
+// b-Rw -> border-right-color EX: @include query(('b-Rw':1px));
+// b-Bw -> border-bottom-color EX: @include query(('b-Bw':1px));
+// b-Lw -> border-left-color EX: @include query(('b-Lw':1px));
+// b-Ts -> border-top-color EX: @include query(('b-Ts':dotted));
+// b-Rs -> border-right-color EX: @include query(('b-Rs':dotted));
+// b-Bs -> border-bottom-color EX: @include query(('b-Bs':dotted));
+// b-Ls -> border-left-color EX: @include query(('b-Ls':dotted));
+// f-w -> flex-wrap EX: @include query(('f-w':wrap));
+// outl -> outline EX: @include query(('outl':none));
+// o-f -> object-fit EX: @include query(('o-f':none));
+// list -> list-style EX: @include query(('list':none));
+// listy -> list-style-type EX: @include query(('listy':circle));
+// listi -> list-style-image EX: @include query(('listi':'sqpurple.gif'));
+// listpos -> list-style-position EX: @include query(('listpos':inside));
+//         a : TThe list-style-position property specifies if the list-item markers should appear inside or outside the content flow.
+// ----------------- a : -1 -> inherit    [inherits this property from its parent element]
+// ----------------- a :  0 -> initial    [sets this property to its default value]
+// ----------------- a :  1 -> inside     [indents the marker and the text. The bullets appear inside the content flow]
+// ----------------- a :  2 -> outside    [keeps the marker to the left of the text. The bullets appears outside the content flow. This is default]
+// pos -> position EX: @include query(('pos':(2,10px auto -1 auto)));
+//                   a : position type , b: list of position direction top-right-bottom-left
+// ----------------- a : -1 -> inherit     [this property from its parent element].
+// ----------------- a :  0 -> initial     [sets this property to its default value].
+// ----------------- a :  1 -> relative    [is positioned relative to its normal position].
+// ----------------- a :  2 -> absolute    [is positioned relative to its first positioned set the location using top right bottom left].
+// ----------------- a :  3 -> fixed       [is positioned relative to the browser window].
+// ----------------- a :  4 -> static      [default value!!. Elements render in order, as they appear in the document flow].
+// ----------------- b :  0px              [only first one set the top position of a positioned element]
+// ----------------- b :  0px 0px          [first, second as define set the top position of a positioned element, right position of a positioned element]
+// ----------------- b :  0px 0px 0px      [first, second, third as define set the top position of a positioned element, right position of a positioned element, bottom position of a positioned element]
+// ----------------- b :  0px 0px 0px 0px  [first, second, third, fourth as define set the top position of a positioned element, right position of a positioned element, bottom position of a positioned element, left position of a positioned element]
+// dis -> display EX: @include query(('dis':(2)));
+//                   a : specifies the type of box used for an HTML element.
+// ----------------- a : -1 -> inherit              [this property from its parent element]
+// ----------------- a :  0 -> initial              [sets this property to its default value]
+// ----------------- a :  1 -> none                 [will not be displayed at all]
+// ----------------- a :  2 -> inline               [Default value. displays an element as an inline element like <span>]
+// ----------------- a :  3 -> block                [displays an element as a block element like <p>]
+// ----------------- a :  4 -> inline-block         [displays an element as an inline-level block container. the inside of this block is formatted as block-level box. and the element itself is formatted as an inline-level box.]
+// ----------------- a :  5 -> table                [let the element behave like a table <table>]
+// ----------------- a :  6 -> table-caption        [let the element behave like a caption <caption>]
+// ----------------- a :  7 -> table-column-group   [let the element behave like a colgroup <colgroup>]
+// ----------------- a :  8 -> table-header-group   [let the element behave like a thead <thead>]
+// ----------------- a :  9 -> table-footer-group   [let the element behave like a tfoot <tfoot>]
+// ----------------- a :  10 -> table-row-group     [let the element behave like a tbody <tbody>]
+// ----------------- a :  11 -> table-cell          [let the element behave like a td <td>]
+// ----------------- a :  12 -> table-column        [let the element behave like a col <col>]
+// ----------------- a :  13 -> table-row           [let the element behave like a tr <tr>]
+// ----------------- a :  14 -> flex                [this defines a flex container, inline or block depending on the given value, it enables a flex context for all its direct children]
+// ----------------- b :  0px              [only first one set the top position of a positioned element]
+// ----------------- b :  0px 0px          [first, second as define set the top position of a positioned element, right position of a positioned element]
+// ----------------- b :  0px 0px 0px      [first, second, third as define set the top position of a positioned element, right position of a positioned element, bottom position of a positioned element]
+// ----------------- b :  0px 0px 0px 0px  [first, second, third, fourth as define set the top position of a positioned element, right position of a positioned element, bottom position of a positioned element, left position of a positioned element]
+// o -> overflew EX: @include query(('o':(2)));
+//                   a : The overflow property specifies what happens if content overflows an element's box.
+// ----------------- a : -1 -> inherit              [this property from its parent element]
+// ----------------- a :  0 -> initial              [sets this property to its default value]
+// ----------------- a :  1 -> auto                 [if overflow is clipped, a scroll-bar should be added to see the rest of the content]
+// ----------------- a :  2 -> scroll               [the overflow is clipped, but a scroll-bar is added to see the rest of the content]
+// ----------------- a :  3 -> hidden               [the overflow is clipped, and the rest of the content will be invisible]
+// ----------------- a :  4 -> visible              [the overflow is not clipped. It renders outside the element's box. This is default]
+// top -> top EX: @include query(('top':20px));
+// right -> right EX: @include query(('right':20px));
+// bottom -> bottom EX: @include query(('bottom':20px));
+// left -> left EX: @include query(('left':20px));
+// fill -> fill EX: @include query(('fill':red));
+// stroke -> stroke EX: @include query(('stroke':red));
+// stroke-w -> stroke-width EX: @include query(('stroke-width':6));
+// stroke-m -> stroke-miterlimit EX: @include query(('stroke-miterlimit':10));
+// vis -> visibility EX: @include query(('vis':hidden));
+// f -> flex EX: @include query(('f':1));
+@mixin query($el) {
+  @each $label, $map in $el {
+    @if $label == 'bg' { background: $map }
+    @if $label == 'bg-c' { background-color: $map }
+    @if $label == 'padd' { padding: $map }
+    @if $label == 'tpadd' { padding-top: $map }
+    @if $label == 'rpadd' { padding-right: $map }
+    @if $label == 'bpadd' { padding-bottom: $map }
+    @if $label == 'lpadd' { padding-left: $map }
+    @if $label == 'marg' { margin: $map }
+    @if $label == 'tmarg' { margin-top: $map }
+    @if $label == 'rmarg' { margin-right: $map }
+    @if $label == 'bmarg' { margin-bottom: $map }
+    @if $label == 'lmarg' { margin-left: $map }
+    @if $label == 'w' {
+      @if length($map)==1 { width: $map }
+      @if length($map)>1 { #{nth($map,2)}-width: nth($map,1); }
+    }
+    @if $label == 'wmax' { max-width: $map; }
+    @if $label == 'wmin' { min-width: $map; }
+    @if $label == 'h' {
+      @if length($map)==1 { height: $map }
+      @if length($map)>1 { #{nth($map,2)}-height: nth($map,1); }
+    }
+    @if $label == 'hmax' { max-height: $map; }
+    @if $label == 'hmin' { min-height: $map; }
+    @if $label == 'dim' {
+      @if length($map)==1 { width: $map }
+      @if length($map)>1 { width: nth($map,1); height: nth($map,2); }
+    }
+    @if $label == 'pos' {
+      @if type-of(nth($map,1)) == string { position: nth($map,1); }
+      @else if nth($map,1) == -1 { position: inherit; }
+      @else if nth($map,1) == 0 { position: initial; }
+      @else if nth($map,1) == 1 { position: relative; }
+      @else if nth($map,1) == 2 { position: absolute; }
+      @else if nth($map,1) == 3 { position: fixed; }
+      @else if nth($map,1) == 4 { position: static; }
+      @else { position: relative; }
+      @if length($map) > 1 {
+        $dir: nth($map,2);
+        $length: length($dir);
+        @if $length==1 {
+          @if nth($dir,1)!= -1 { top: nth($dir,1); }
+        }
+        @if $length==2 {
+          @if nth($dir,1)!= -1 { top: nth($dir,1); }
+          @if nth($dir,2)!= -1 { right: nth($dir,2); }
+        }
+        @if $length==3 {
+          @if nth($dir,1)!= -1 { top: nth($dir,1); }
+          @if nth($dir,2)!= -1 { right: nth($dir,2); }
+          @if nth($dir,3)!= -1 { bottom: nth($dir,3); }
+        }
+        @if $length==4 {
+          @if nth($dir,1)!= -1 { top: nth($dir,1); }
+          @if nth($dir,2)!= -1 { right: nth($dir,2); }
+          @if nth($dir,3)!= -1 { bottom: nth($dir,3); }
+          @if nth($dir,4)!= -1 { left: nth($dir,4); }
+        }
+      }
+    }
+    @if $label == 'dis' {
+      @if type-of(nth($map,1)) == string { display: nth($map,1); }
+      @else if nth($map,1) == -1 { display: inherit; }
+      @else if nth($map,1) == 0  { display: initial; }
+      @else if nth($map,1) == 1  { display: none; }
+      @else if nth($map,1) == 2  { display: inline; }
+      @else if nth($map,1) == 3  { display: block; }
+      @else if nth($map,1) == 4  { display: inline-block; }
+      @else if nth($map,1) == 5  { display: table; }
+      @else if nth($map,1) == 6  { display: table-caption; }
+      @else if nth($map,1) == 7  { display: table-column-group; }
+      @else if nth($map,1) == 8  { display: table-header-group; }
+      @else if nth($map,1) == 9  { display: table-footer-group; }
+      @else if nth($map,1) == 10 { display: table-row-group; }
+      @else if nth($map,1) == 11 { display: table-cell; }
+      @else if nth($map,1) == 12 { display: table-column; }
+      @else if nth($map,1) == 13 { display: table-row; }
+      @else if nth($map,1) == 14 { display: flex; }
+      @else { display: inline; }
+    }
+    @if $label == 'o' or $label == 'ox' or $label == 'oy' {
+      $overflow: 'overflow';
+      @if $label == 'o' { $overflow: 'overflow'; }
+      @if $label == 'ox' { $overflow: 'overflow-x'; }
+      @if $label == 'oy' { $overflow: 'overflow-y'; }
+      @if type-of(nth($map,1)) == string { #{$overflow}: nth($map,1); }
+      @else if nth($map,1) == -1 { #{$overflow}: inherit; }
+      @else if nth($map,1) == 0  { #{$overflow}: initial; }
+      @else if nth($map,1) == 1  { #{$overflow}: auto; }
+      @else if nth($map,1) == 2  { #{$overflow}: scroll; }
+      @else if nth($map,1) == 3  { #{$overflow}: hidden; }
+      @else if nth($map,1) == 4  { #{$overflow}: visible; }
+      @else { #{$overflow}: hidden; }
+    }
+    @if $label == 'c' { color: $map }
+    @if $label == 'align' { text-align: $map }
+    @if $label == 'valign' { vertical-align: $map }
+    @if $label == 'clr' { clear: $map }
+    @if $label == 'ff' { font-family: $map }
+    @if $label == 'fw' { font-weight: $map }
+    @if $label == 'fv' { font-variant: $map }
+    @if $label == 'fstyle' { font-style: $map }
+    @if $label == 'fstretch' { font-stretch: $map }
+    @if $label == 'fsize' { font-size: $map }
+    @if $label == 'lh' { line-height:  $map }
+    @if $label == 'ls' { letter-spacing: $map }
+    @if $label == 'tt' { text-transform: $map }
+    @if $label == 'ti' { text-indent: $map }
+    @if $label == 'ws' { white-space: $map }
+    @if $label == 'to' { text-overflow: $map }
+    @if $label == 'tdec' { text-decoration: $map }
+    @if $label == 'j-c' { justify-content: $map }
+    @if $label == 'u-s' { user-select: $map }
+    @if $label == 'a-i' { align-items: $map }
+    @if $label == 'cu' { cursor: $map }
+    @if $label == 'pe' { pointer-events: $map }
+    @if $label == 'ct' { content: $map }
+    @if $label == 'op' { opacity: $map }
+    @if $label == 'fl' { float: $map }
+    @if $label == 'z' { z-index: $map }
+    @if $label == 'b' { border: $map }
+    @if $label == 'b-c' { border-color: $map }
+    @if $label == 'b-w' { border-width: $map }
+    @if $label == 'b-style' { border-style: $map }
+    @if $label == 'b-T' { border-top: $map }
+    @if $label == 'b-R' { border-right: $map }
+    @if $label == 'b-B' { border-bottom: $map }
+    @if $label == 'b-L' { border-left: $map }
+    @if $label == 'b-coll' { border-collapse: $map }
+    @if $label == 'b-sp' { border-spacing: $map }
+    @if $label == 'b-s' { box-sizing: $map }
+    @if $label == 'b-Tc' { border-top-color: $map }
+    @if $label == 'b-Rc' { border-right-color: $map }
+    @if $label == 'b-Bc' { border-bottom-color: $map }
+    @if $label == 'b-Lc' { border-left-color: $map }
+    @if $label == 'b-Tw' { border-top-width: $map }
+    @if $label == 'b-Rw' { border-right-width: $map }
+    @if $label == 'b-Bw' { border-bottom-width: $map }
+    @if $label == 'b-Lw' { border-left-width: $map }
+    @if $label == 'b-Ts' { border-top-style: $map }
+    @if $label == 'b-Rs' { border-right-style: $map }
+    @if $label == 'b-Bs' { border-bottom-style: $map }
+    @if $label == 'b-Ls' { border-left-style: $map }
+    @if $label == 'f-w' { flex-wrap: $map }
+    @if $label == 'outl' { outline: $map }
+    @if $label == 'o-f' { object-fit: $map }
+    @if $label == 'list' { list-style: $map }
+    @if $label == 'listy' { list-style-type: $map }
+    @if $label == 'listi' { list-style-image: url($map) }
+    @if $label == 'listpos' {
+      @if type-of(nth($map,1)) == string { list-style-position: nth($map,1); }
+      @else if nth($map,1) == -1 { list-style-position: inherit; }
+      @else if nth($map,1) == 0  { list-style-position: initial; }
+      @else if nth($map,1) == 1  { list-style-position: inside; }
+      @else if nth($map,1) == 2  { list-style-position: outside; }
+      @else { list-style-position: initial; }
+    }
+    @if $label == 'top' { top: $map }
+    @if $label == 'right' { right: $map }
+    @if $label == 'bottom' { bottom: $map }
+    @if $label == 'left' { left: $map }
+    @if $label == 'fill' { fill: $map }
+    @if $label == 'stroke' { stroke: $map }
+    @if $label == 'stroke-w' { stroke-width: $map }
+    @if $label == 'stroke-m' { stroke-miterlimit: $map }
+    @if $label == 'vis' { visibility: $map }
+    @if $label == 'f' { flex: $map }
+  }
+  @content;
+}

@@ -1,0 +1,25 @@
+/* Set up colors that will be repeatedly used in RGBA format, with the alpha value omitted for customization, while maintaining the base color. */
+$color-1: (71, 154, 144);          // Dark Green - Bay of many color #479A90
+$color-2: (35, 52, 131);           // Dark Blue - Bay of many color #233483
+$color-3: (233, 153, 31);          // a yellow/orange, used as a warning color
+$color-4: (68, 74, 84);            // a dark gray
+$color-5: (233, 233, 233);         // Mercury #E9E9E9
+$color-6: (255,255,255);           // pure white
+$color-7: (183, 227, 238);         // light brand blue
+$color-8: (189, 49, 40);           // red, used an error color
+$color-9: (109, 187, 71);          // green, used as an action or success color
+$color-10: (218, 218, 218);        // light gray
+$color-11: (245, 245, 245);        // white smoke
+$color-12: (238, 130, 238);        // violet
+
+// set up the basic colors
+$defaultColors: (
+  'black': (0, 0, 0),
+  'red': (255, 0, 0),
+  'blue': (0, 0, 255),
+  'green': (0, 128, 0),
+  'yellow': (255, 255, 0),
+  'orange': (255, 102, 26),
+  'gray': (146, 146, 146),
+  'white': (255, 255, 255)
+);

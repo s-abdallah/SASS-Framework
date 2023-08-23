@@ -1,0 +1,52 @@
+// GLOBALs
+$assetsPath: '../assets/';
+
+$containW: 94%;
+$containMax: 2080px;
+$contain-reduce: 6%;
+
+$headerHeight: 87px;
+$outerWidth: calc(100vw - (100vw - 100%));
+$gutter: 2vw;
+
+// BUTTONs
+$btn-height:45px;
+$btn-icon: 24px;
+$btn-icon-white: '#{$assetsPath}_svg/grfx-link-arrow.svg';
+$btn-icon-blue: '#{$assetsPath}_svg/grfx-link-arrow-blue.svg';
+$btn-icon-sienna: '#{$assetsPath}_svg/grfx-link-arrow-sienna.svg';
+
+// HEADER
+$header-width: 100%;
+$header-background: color('white');
+$header-height: 90px;
+
+$header-banner-h: 40px;
+$hamburger-menu-size: 30px;
+$hamburger-nav-top: 105px;
+$hamburger-nav-right: 4vw;
+$hamburger-nav-width: 15px;
+$hamburger-nav-height: 3px;
+
+$head-logo-H: 30px;
+
+$fixed-contact-right: calc(2vw + 10px);
+
+// FOOTER
+$footer-hMin: 400px;
+$social-space: calc(0.4vw + 5px);
+$social-size: 20px;
+
+// HERO
+$hero-hMax: 1080px;
+$hero-hMin: calc(#{$hero-hMax} / 2);
+$hero-h: 100vw;
+
+// MAP
+$map-h: 100vh;
+$map-hMin: 690px;
+$map-hMax: 920px;
+$map-key-pos: calc(2vw + 10px);
+
+// CONTACT
+$contact-space: calc(2vw + 20px);

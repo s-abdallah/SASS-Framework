@@ -1,0 +1,28 @@
+// Set up the default fonts for the webpages.
+$defaultFonts: (
+  'ff'       : 'Roboto',
+  'c'        : 'black',
+  'fw'       : 400,
+  'fv'       : initial,
+  'fstyle'   : normal,
+  'fstretch' : normal,
+  'fsize'    : 16px,
+  'lh'       : normal,
+  'ls'       : normal,
+  'tt'       : initial,
+  'tdec'     : none
+);
+
+html,
+body{
+    font-size: 62.5%;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: grayscale;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,400;10..48,500&family=Oswald:wght@400;500;600&family=Roboto:wght@400;700&family=Shantell+Sans:wght@500&display=swap');
